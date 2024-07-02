@@ -6,13 +6,12 @@ import com.example.demo.entity.Patient;
 import com.example.demo.entity.Visit;
 import com.example.demo.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/patients")
@@ -35,5 +34,11 @@ public class PatientController {
     public List<PatientDTO> getPatientsByVisitDate(@PathVariable String visitDate) {
         LocalDate date = LocalDate.parse(visitDate);
         return patientService.getPatientsByVisitDate(date);
+    }
+
+    @GetMapping("/visits")
+    public List<Map<String, Object>> getPatientsWithVisitDateAfter(
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate visitDate) {
+        return patientService.getPatientsWithVisitDateAfter(visitDate);
     }
 }

@@ -9,10 +9,17 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface VisitRepository extends JpaRepository<Visit, Long> {
 
     @Query("SELECT v.patient FROM Visit v WHERE v.visitDate = :visitDate")
     List<Patient> findByVisitDate(@Param("visitDate") LocalDate visitDate);
+
+    @Query(value = "SELECT p.name AS name, v.visit_date AS visitDate " +
+            "FROM visit v " +
+            "JOIN patient p ON v.patient_id = p.id " +
+            "WHERE v.visit_date > :visitDate", nativeQuery = true)
+    List<Map<String, Object>> findPatientsWithVisitDateAfter(@Param("visitDate") LocalDate visitDate);
 }

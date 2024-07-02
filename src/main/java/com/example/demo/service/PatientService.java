@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,6 +42,10 @@ public class PatientService {
         return patients.stream()
                 .map(this::convertToPatientDTO)
                 .collect(Collectors.toList());
+    }
+
+    public List<Map<String, Object>> getPatientsWithVisitDateAfter(LocalDate visitDate) {
+        return visitRepository.findPatientsWithVisitDateAfter(visitDate);
     }
 
     private VisitDTO convertToVisitDTO(Visit visit) {
